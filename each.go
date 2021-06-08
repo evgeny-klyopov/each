@@ -1,5 +1,10 @@
 package eacht
 
+import (
+	"errors"
+	"strings"
+)
+
 type each struct {
 	errs         []error
 	bufferLength int
@@ -71,6 +76,18 @@ func (e *each) flush() {
 	e.buffer = make([]string, 0, e.bufferLength)
 }
 
+func (e *each) GetError() error {
+	if e.HasError() == false {
+		return nil
+	}
+
+	errs := make([]string, len(e.errs))
+	for _, err := range e.errs {
+		errs = append(errs, err.Error())
+	}
+
+	return errors.New(strings.Join(errs, ", "))
+}
 func (e *each) GetErrors() *[]error {
 	return &e.errs
 }
