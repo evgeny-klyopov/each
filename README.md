@@ -11,13 +11,13 @@ import (
 
 func main() {
 	var errs *[]error
-	rows := make([]interface{}, 0)
+	rows := make([]string, 0)
 
 	for i := 0; i < 100; i++ {
 		rows = append(rows, fmt.Sprintf("name%d", i))
 	}
 
-	errs = each.Iterate(rows, 2, func(lines []interface{}, hasError bool) error {
+	errs = each.Iterate(rows, 2, func(lines []string, hasError bool) error {
 		if hasError == true {
 			return nil
 		}
@@ -41,13 +41,13 @@ import (
 )
 
 func main() {
-	rows := make([]interface{}, 0)
+	rows := make([]string, 0)
 
 	for i := 0; i < 100; i++ {
 		rows = append(rows, fmt.Sprintf("name%d", i))
 	}
 
-	e := each.NewEach(2, func(lines []interface{}, hasError bool) error {
+	e := each.NewEach(2, func(lines []string, hasError bool) error {
 		if hasError == true {
 			return nil
 		}

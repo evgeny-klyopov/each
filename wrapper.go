@@ -1,6 +1,6 @@
 package eacht
 
-func Iterate(rows []interface{}, bufferLength int, callbackFunc f) *[]error {
+func Iterate(rows []string, bufferLength int, callbackFunc f) *[]error {
 	var errs *[]error
 	e := NewEach(bufferLength, callbackFunc)
 

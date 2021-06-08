@@ -4,27 +4,27 @@ type each struct {
 	errs         []error
 	bufferLength int
 	callbackFunc f
-	channel      chan []interface{}
+	channel      chan []string
 	channelClose chan struct{}
-	buffer       []interface{}
+	buffer       []string
 }
 
 type Iterator interface {
 	run()
 	HasError() bool
-	Add(line interface{}) bool
+	Add(line string) bool
 	Close()
 	GetErrors() *[]error
 }
 
-type f func([]interface{}, bool) error
+type f func([]string, bool) error
 
 func NewEach(bufferLength int, callbackFunc f) Iterator {
 	var e Iterator
 
 	e = &each{
-		channel:      make(chan []interface{}),
-		buffer:       make([]interface{}, 0, bufferLength),
+		channel:      make(chan []string),
+		buffer:       make([]string, 0, bufferLength),
 		bufferLength: bufferLength,
 		callbackFunc: callbackFunc,
 		channelClose: make(chan struct{}),
@@ -48,7 +48,7 @@ func (e *each) run() {
 	close(e.channelClose)
 }
 
-func (e *each) Add(line interface{}) bool {
+func (e *each) Add(line string) bool {
 	e.buffer = append(e.buffer, line)
 	if len(e.buffer) >= e.bufferLength {
 		e.flush()
@@ -68,7 +68,7 @@ func (e *each) Close() {
 
 func (e *each) flush() {
 	e.channel <- e.buffer
-	e.buffer = make([]interface{}, 0, e.bufferLength)
+	e.buffer = make([]string, 0, e.bufferLength)
 }
 
 func (e *each) GetErrors() *[]error {
