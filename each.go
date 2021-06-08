@@ -20,6 +20,7 @@ type Iterator interface {
 	Add(line string) bool
 	Close()
 	GetErrors() *[]error
+	GetError() error
 }
 
 type f func([]string, bool) error
